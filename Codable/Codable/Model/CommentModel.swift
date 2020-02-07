@@ -10,7 +10,7 @@ import Foundation
 
 // структура для "https://jsonplaceholder.typicode.com/users"
 
-struct CommentModel: Codable {
+struct CommentModel: Decodable {
     let id: Int
     let name: String
     let username: String
@@ -21,13 +21,22 @@ struct CommentModel: Codable {
     let company: Company
 }
 
-struct Company: Codable {
+struct Company: Decodable {
     let name: String
     let catchPhrase: String
     let bs: String
+    
+    enum CodingKeys: String, CodingKey { // меняем ключи если не совпадает
+        case name
+        case catchPhrase
+        case bs
+        // case name = "NaMe"
+        // case catchPhrase = "caTchPhrase"
+    }
+    
 }
 
-struct Address: Codable {
+struct Address: Decodable {
     let street:  String
     let suite:  String
     let city:  String
@@ -35,7 +44,7 @@ struct Address: Codable {
     let geo: Geo
 }
 
-struct Geo: Codable {
+struct Geo: Decodable {
     let lat:  String
     let lng:  String
 }
