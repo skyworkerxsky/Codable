@@ -26,7 +26,7 @@ struct Company: Decodable {
     let catchPhrase: String
     let bs: String
     
-    enum CodingKeys: String, CodingKey { // меняем ключи если не совпадает
+    enum CodingKeys: String, CodingKey { // меняем ключи если не совпадают имена
         case name
         case catchPhrase
         case bs
