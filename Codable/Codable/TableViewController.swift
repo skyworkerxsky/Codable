@@ -11,7 +11,8 @@ import UIKit
 class TableViewController: UITableViewController  {
 
     // MARK: - Properties
-    let url3 = "https://jsonplaceholder.typicode.com/users"
+    let carURL = "https://b2btest.ma.ru/MASP/MSV2/SIOKeyHst/KeyReadByCurrentUser"
+    let jsonURL = "https://jsonplaceholder.typicode.com/users"
     private var comments = [CommentModel]()
 
     
@@ -20,12 +21,14 @@ class TableViewController: UITableViewController  {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        Network.getData(url: url3) { (comments) in
+        Network.getData(url: jsonURL) { (comments) in
             self.comments = comments
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
         }
+        
+        Network.getCar(url: carURL)
     }
 
     // MARK: - Table view data source
