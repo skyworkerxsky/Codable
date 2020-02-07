@@ -57,6 +57,7 @@ class Network {
                             let jsonData = try JSONSerialization.data(withJSONObject: item)
                             let carArray = try JSONDecoder().decode(CarModel.self, from: jsonData) // раскладываем в нашу модель
                             print(carArray)
+                            // completion(carArray)
                         }
                     }
                 } catch {
