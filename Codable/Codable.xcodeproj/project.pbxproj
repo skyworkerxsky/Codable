@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		7C1B4D7823EDA0DB00616ACE /* CarModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1B4D7723EDA0DB00616ACE /* CarModel.swift */; };
+		7C45316D23EEAD71002E7BE0 /* GithubModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C45316C23EEAD71002E7BE0 /* GithubModel.swift */; };
+		7C45316F23EEDA81002E7BE0 /* GithubHeadersModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C45316E23EEDA81002E7BE0 /* GithubHeadersModel.swift */; };
 		7C4C74FB23ED891800A9D394 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C4C74FA23ED891800A9D394 /* AppDelegate.swift */; };
 		7C4C74FD23ED891800A9D394 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C4C74FC23ED891800A9D394 /* SceneDelegate.swift */; };
 		7C4C74FF23ED891800A9D394 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C4C74FE23ED891800A9D394 /* TableViewController.swift */; };
@@ -20,6 +22,8 @@
 
 /* Begin PBXFileReference section */
 		7C1B4D7723EDA0DB00616ACE /* CarModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarModel.swift; sourceTree = "<group>"; };
+		7C45316C23EEAD71002E7BE0 /* GithubModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GithubModel.swift; sourceTree = "<group>"; };
+		7C45316E23EEDA81002E7BE0 /* GithubHeadersModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GithubHeadersModel.swift; sourceTree = "<group>"; };
 		7C4C74F723ED891800A9D394 /* Codable.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Codable.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7C4C74FA23ED891800A9D394 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7C4C74FC23ED891800A9D394 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -48,6 +52,8 @@
 			children = (
 				7C4C751023ED8BC200A9D394 /* CommentModel.swift */,
 				7C1B4D7723EDA0DB00616ACE /* CarModel.swift */,
+				7C45316C23EEAD71002E7BE0 /* GithubModel.swift */,
+				7C45316E23EEDA81002E7BE0 /* GithubHeadersModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -166,7 +172,9 @@
 				7C4C74FF23ED891800A9D394 /* TableViewController.swift in Sources */,
 				7C4C74FB23ED891800A9D394 /* AppDelegate.swift in Sources */,
 				7C1B4D7823EDA0DB00616ACE /* CarModel.swift in Sources */,
+				7C45316F23EEDA81002E7BE0 /* GithubHeadersModel.swift in Sources */,
 				7C4C751123ED8BC200A9D394 /* CommentModel.swift in Sources */,
+				7C45316D23EEAD71002E7BE0 /* GithubModel.swift in Sources */,
 				7C4C750F23ED8A2E00A9D394 /* Network.swift in Sources */,
 				7C4C74FD23ED891800A9D394 /* SceneDelegate.swift in Sources */,
 			);

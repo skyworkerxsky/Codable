@@ -23,7 +23,7 @@ class Network {
             if let data = data {
                 do {
                     let comments = try JSONDecoder().decode([CommentModel].self, from: data) // раскладываем в нашу модель
-                    //                print(comments)
+                    print("comments success")
                     completion(comments)
                 } catch {
                     print(error)
@@ -52,15 +52,49 @@ class Network {
             if let data = data {
                 do {
                     if let json = try JSONSerialization.jsonObject(with: data) as? [String: Any],
-                    let data = json["data"] as? [[String:Any]] {
+                        let data = json["data"] as? [[String:Any]] {
                         for item in data {
                             let jsonData = try JSONSerialization.data(withJSONObject: item)
                             let carArray = try JSONDecoder().decode(CarModel.self, from: jsonData) // раскладываем в нашу модель
-                            print(carArray)
+                            // print(carArray)
                             // completion(carArray)
                         }
                     }
+                    print("carArray success")
                 } catch {
+                    print(error)
+                }
+            }
+            
+        }.resume()
+    }
+    
+    static func getRepos(url: String) {
+        guard let url = URL(string: url) else { return }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        
+        URLSession.shared.dataTask(with: request) { (data, response, error) in
+            
+            if error != nil {
+                print(error!)
+                return
+            }
+            
+            if response != nil {
+                let httpResponse = response as! HTTPURLResponse
+                let field = httpResponse.allHeaderFields["Link"]
+                print(field!)
+            }
+            
+            if let data = data {
+                do {
+                    let decoder = JSONDecoder()
+                    decoder.keyDecodingStrategy = .convertFromSnakeCase
+                    let json = try decoder.decode([GithubModel].self, from: data)
+                    print(json)
+                } catch  {
                     print(error)
                 }
             }

@@ -11,16 +11,19 @@ import UIKit
 class TableViewController: UITableViewController  {
 
     // MARK: - Properties
+    
     let carURL = "https://b2btest.ma.ru/MASP/MSV2/SIOKeyHst/KeyReadByCurrentUser"
     let jsonURL = "https://jsonplaceholder.typicode.com/users"
+    let githubUrl = "https://api.github.com/repositories"
+    
     private var comments = [CommentModel]()
-
     
     // MARK: - Outlets
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // get jsonplaceholder
         Network.getData(url: jsonURL) { (comments) in
             self.comments = comments
             DispatchQueue.main.async {
@@ -28,7 +31,12 @@ class TableViewController: UITableViewController  {
             }
         }
         
+        // get car
         Network.getCar(url: carURL)
+        
+        // get repository
+        Network.getRepos(url: githubUrl)
+        
     }
 
     // MARK: - Table view data source
