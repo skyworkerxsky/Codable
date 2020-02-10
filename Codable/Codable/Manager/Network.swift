@@ -69,11 +69,12 @@ class Network {
         }.resume()
     }
     
-    static func getRepos(url: String) {
+    static func getRepos(url: String, completion: @escaping (_ repos: [GithubModel]) -> (), completion2: @escaping (([String: String]) -> ())) {
         guard let url = URL(string: url) else { return }
         
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
+        request.addValue("token 0f65b3276bc987728b8be4ed4f45a22127194551", forHTTPHeaderField: "Authorization")
         
         URLSession.shared.dataTask(with: request) { (data, response, error) in
             
@@ -89,13 +90,14 @@ class Network {
                 let links = linkHeader.components(separatedBy: ",")
                 
                 var dictionary: [String: String] = [:]
+                
                 links.forEach({
                     let components = $0.components(separatedBy: "; ")
-                    let cleanPath = components[0].trimmingCharacters(in: CharacterSet(charactersIn: "<>"))
+                    let cleanPath = components[0].trimmingCharacters(in: CharacterSet(charactersIn: "< >"))
                     dictionary[components[1]] = cleanPath
                 })
-                print(dictionary["rel=\"next\""])
-                
+                print(dictionary)
+                completion2(dictionary)
             }
             
             if let data = data {
@@ -103,7 +105,8 @@ class Network {
                     let decoder = JSONDecoder()
                     decoder.keyDecodingStrategy = .convertFromSnakeCase
                     let json = try decoder.decode([GithubModel].self, from: data)
-//                    print(json)
+                    //                    print(json)
+                    completion(json)
                 } catch  {
                     print(error)
                 }

@@ -43,6 +43,9 @@
                                             <constraint firstAttribute="height" constant="62" id="scx-Xd-T9J"/>
                                         </constraints>
                                         <state key="normal" title="Back"/>
+                                        <connections>
+                                            <action selector="backButtonPress:" destination="lhy-js-hCS" eventType="touchUpInside" id="Vmo-w4-fvJ"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L3t-xf-Jut">
                                         <rect key="frame" x="192" y="0.0" width="151" height="62"/>
@@ -51,6 +54,9 @@
                                             <constraint firstAttribute="height" constant="62" id="w25-CU-tiL"/>
                                         </constraints>
                                         <state key="normal" title="Next"/>
+                                        <connections>
+                                            <action selector="nextButtonPress:" destination="lhy-js-hCS" eventType="touchUpInside" id="NoL-FP-iMD"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                             </stackView>

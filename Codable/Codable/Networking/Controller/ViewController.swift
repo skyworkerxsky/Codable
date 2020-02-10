@@ -20,7 +20,9 @@ class ViewController: UIViewController  {
     let jsonURL = "https://jsonplaceholder.typicode.com/users"
     let githubUrl = "https://api.github.com/repositories"
     
-    private var comments = [CommentModel]()
+    private var data = [GithubModel]()
+    private var nextLink: String?
+    private var backLink: String?
     
     // MARK: - Outlets
     
@@ -29,24 +31,43 @@ class ViewController: UIViewController  {
         
         // get jsonplaceholder
         Network.getData(url: jsonURL) { (comments) in
-            self.comments = comments
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
-            }
+            
         }
         
         // get car
         Network.getCar(url: carURL)
         
         // get repository
-        Network.getRepos(url: githubUrl)
+        Network.getRepos(url: githubUrl, completion: { (data) in
+            self.data = data
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }) { (dictionary) in
+            if let nextPagePath = dictionary["rel=\"next\""] {
+                self.nextLink = nextPagePath
+            }
+        }
         
     }
     
+    // MARK: - Actions
     
+    @IBAction func nextButtonPress(_ sender: Any) {
+        guard let next = nextLink else { return }
+        Network.getRepos(url: next, completion: { (data) in
+            self.data = data
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }) { (dictionary) in
+            if let nextPagePath = dictionary["rel=\"next\""] {
+                self.nextLink = nextPagePath
+            }
+        }
+    }
     
-    @IBAction func nextButton(_ sender: Any) {
-        //        Network.getRepos(url: <#T##String#>) // СОЗДАТЬ ЗАМЫКАНИЕ КОТОРОЕ ВОЗВРАЩАЕТ ССЫЛКИ И ПРОВЕРИТЬ ИХ
+    @IBAction func backButtonPress(_ sender: Any) {
     }
     
 }
@@ -56,12 +77,12 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     // MARK: - Table view data source
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return comments.count
+        return data.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.textLabel?.text = comments[indexPath.row].name
+        cell.textLabel?.text = data[indexPath.row].name
         return cell
     }
 }
