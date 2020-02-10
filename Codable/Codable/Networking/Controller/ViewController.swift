@@ -18,34 +18,59 @@ class ViewController: UIViewController  {
     
     let carURL = "https://b2btest.ma.ru/MASP/MSV2/SIOKeyHst/KeyReadByCurrentUser"
     let jsonURL = "https://jsonplaceholder.typicode.com/users"
-    let githubUrl = "https://api.github.com/repositories"
+    let githubURL = "https://api.github.com/repositories"
+    let githubSearchURL = "https://api.github.com/search/repositories?q=page&s=updated"
     
     private var data = [GithubModel]()
     private var nextLink: String?
-    private var backLink: String?
+    private var prevLink: String?
     
     // MARK: - Outlets
+    @IBOutlet weak var backButton: UIButton!
+    @IBOutlet weak var nextButton: UIButton!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        backButton.isEnabled = false
+        
+        /*
         // get jsonplaceholder
         Network.getData(url: jsonURL) { (comments) in
             
         }
         
         // get car
-        Network.getCar(url: carURL)
+        // Network.getCar(url: carURL)
         
         // get repository
-        Network.getRepos(url: githubUrl, completion: { (data) in
+        Network.getRepos(url: githubURL, completion: { (data) in
+            
+        }) { (dictionary) in
+            
+        }
+        */
+        
+        // get search repository
+        Network.getSearchRepos(url: githubSearchURL, completion: { (data) in
             self.data = data
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
-        }) { (dictionary) in
-            if let nextPagePath = dictionary["rel=\"next\""] {
+        }) { (headerLinks) in
+            if let nextPagePath = headerLinks["rel=\"next\""] {
                 self.nextLink = nextPagePath
+                DispatchQueue.main.async {
+                    self.nextButton.isEnabled = true
+                }
+            }
+            
+            if let prevPage = headerLinks["rel=\"prev\""] {
+                DispatchQueue.main.async {
+                    self.backButton.isEnabled = true
+                }
+                self.prevLink = prevPage
             }
         }
         
@@ -55,19 +80,66 @@ class ViewController: UIViewController  {
     
     @IBAction func nextButtonPress(_ sender: Any) {
         guard let next = nextLink else { return }
-        Network.getRepos(url: next, completion: { (data) in
+        Network.getSearchRepos(url: next, completion: { (data) in
             self.data = data
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
-        }) { (dictionary) in
-            if let nextPagePath = dictionary["rel=\"next\""] {
+        }) { (headerLinks) in
+            if let nextPagePath = headerLinks["rel=\"next\""] {
+                DispatchQueue.main.async {
+                    self.nextButton.isEnabled = true
+                }
                 self.nextLink = nextPagePath
+            } else {
+                DispatchQueue.main.async {
+                    self.nextButton.isEnabled = false
+                }
+            }
+            
+            if let prevPage = headerLinks["rel=\"prev\""] {
+                DispatchQueue.main.async {
+                    self.backButton.isEnabled = true
+                }
+                self.prevLink = prevPage
+            } else {
+                DispatchQueue.main.async {
+                    self.backButton.isEnabled = false
+                }
             }
         }
     }
     
     @IBAction func backButtonPress(_ sender: Any) {
+        guard let prev = prevLink else { return }
+        Network.getSearchRepos(url: prev, completion: { (data) in
+            self.data = data
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }) { (headerLinks) in
+            if let nextPagePath = headerLinks["rel=\"next\""] {
+                DispatchQueue.main.async {
+                    self.nextButton.isEnabled = true
+                }
+                self.nextLink = nextPagePath
+            } else {
+                DispatchQueue.main.async {
+                    self.nextButton.isEnabled = false
+                }
+            }
+            
+            if let prevPage = headerLinks["rel=\"prev\""] {
+                DispatchQueue.main.async {
+                    self.backButton.isEnabled = true
+                }
+                self.prevLink = prevPage
+            } else {
+                DispatchQueue.main.async {
+                    self.backButton.isEnabled = false
+                }
+            }
+        }
     }
     
 }

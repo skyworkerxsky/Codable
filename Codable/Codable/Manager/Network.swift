@@ -95,7 +95,7 @@ class Network {
                     let cleanPath = components[0].trimmingCharacters(in: CharacterSet(charactersIn: "< >"))
                     dictionary[components[1]] = cleanPath
                 })
-                print(dictionary)
+                
                 completion2(dictionary)
             }
             
@@ -104,7 +104,7 @@ class Network {
                     let decoder = JSONDecoder()
                     decoder.keyDecodingStrategy = .convertFromSnakeCase
                     let json = try decoder.decode([GithubModel].self, from: data)
-                    //                    print(json)
+                    // print(json)
                     completion(json)
                 } catch  {
                     print(error)
@@ -114,6 +114,60 @@ class Network {
         }.resume()
     }
     
-    
+    static func getSearchRepos(url: String, completion: @escaping (_ repos: [GithubModel]) -> (), completion2: @escaping (([String: String]) -> ())) {
+        guard let url = URL(string: url) else { return }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        
+        URLSession.shared.dataTask(with: request) { (data, response, error) in
+            
+            if error != nil {
+                print(error!)
+                return
+            }
+            
+            if response != nil {
+                let httpResponse = response as! HTTPURLResponse
+                let field = httpResponse.allHeaderFields["Link"] as? String
+                guard let linkHeader = field else { return }
+                let links = linkHeader.components(separatedBy: ",")
+                
+                var dictionary: [String: String] = [:]
+                
+                links.forEach({
+                    let components = $0.components(separatedBy: "; ")
+                    let cleanPath = components[0].trimmingCharacters(in: CharacterSet(charactersIn: "< >"))
+                    dictionary[components[1]] = cleanPath
+                })
+                
+                // print(dictionary)
+                completion2(dictionary)
+            }
+            
+            if let data = data {
+                do {
+                    let decoder = JSONDecoder()
+                    decoder.keyDecodingStrategy = .convertFromSnakeCase
+                    
+                    if let json = try JSONSerialization.jsonObject(with: data) as? [String: Any],
+                        let data = json["items"] as? [[String:Any]] {
+                        var repositories = [GithubModel]()
+                        for item in data {
+                            let jsonData = try JSONSerialization.data(withJSONObject: item)
+                            let repository = try decoder.decode(GithubModel.self, from: jsonData) // раскладываем в нашу модель
+                            repositories.append(repository)
+                        }
+                        // print(repositories)
+                        completion(repositories)
+                    }
+                    
+                } catch  {
+                    print(error)
+                }
+            }
+            
+        }.resume()
+    }
     
 }

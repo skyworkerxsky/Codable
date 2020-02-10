@@ -74,6 +74,8 @@
                         <viewLayoutGuide key="safeArea" id="ACG-5U-NNo"/>
                     </view>
                     <connections>
+                        <outlet property="backButton" destination="5pG-OQ-yIa" id="xLU-ee-13c"/>
+                        <outlet property="nextButton" destination="L3t-xf-Jut" id="gON-0G-uhP"/>
                         <outlet property="tableView" destination="7L1-lS-j8e" id="idw-M5-8wH"/>
                     </connections>
                 </viewController>
