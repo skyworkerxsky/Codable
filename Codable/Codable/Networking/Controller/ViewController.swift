@@ -8,8 +8,12 @@
 
 import UIKit
 
-class TableViewController: UITableViewController  {
-
+class ViewController: UIViewController  {
+    
+    // MARK: - Outlets
+    
+    @IBOutlet weak var tableView: UITableView!
+    
     // MARK: - Properties
     
     let carURL = "https://b2btest.ma.ru/MASP/MSV2/SIOKeyHst/KeyReadByCurrentUser"
@@ -38,20 +42,27 @@ class TableViewController: UITableViewController  {
         Network.getRepos(url: githubUrl)
         
     }
+    
+    
+    
+    @IBAction func nextButton(_ sender: Any) {
+        //        Network.getRepos(url: <#T##String#>) // СОЗДАТЬ ЗАМЫКАНИЕ КОТОРОЕ ВОЗВРАЩАЕТ ССЫЛКИ И ПРОВЕРИТЬ ИХ
+    }
+    
+}
 
+extension ViewController: UITableViewDelegate, UITableViewDataSource {
+    
     // MARK: - Table view data source
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return comments.count
     }
-
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         cell.textLabel?.text = comments[indexPath.row].name
         return cell
     }
-    
-
 }
 

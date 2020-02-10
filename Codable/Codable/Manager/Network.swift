@@ -84,8 +84,18 @@ class Network {
             
             if response != nil {
                 let httpResponse = response as! HTTPURLResponse
-                let field = httpResponse.allHeaderFields["Link"]
-                print(field!)
+                let field = httpResponse.allHeaderFields["Link"] as? String
+                guard let linkHeader = field else { return }
+                let links = linkHeader.components(separatedBy: ",")
+                
+                var dictionary: [String: String] = [:]
+                links.forEach({
+                    let components = $0.components(separatedBy: "; ")
+                    let cleanPath = components[0].trimmingCharacters(in: CharacterSet(charactersIn: "<>"))
+                    dictionary[components[1]] = cleanPath
+                })
+                print(dictionary["rel=\"next\""])
+                
             }
             
             if let data = data {
@@ -93,7 +103,7 @@ class Network {
                     let decoder = JSONDecoder()
                     decoder.keyDecodingStrategy = .convertFromSnakeCase
                     let json = try decoder.decode([GithubModel].self, from: data)
-                    print(json)
+//                    print(json)
                 } catch  {
                     print(error)
                 }
@@ -101,5 +111,7 @@ class Network {
             
         }.resume()
     }
+    
+    
     
 }
