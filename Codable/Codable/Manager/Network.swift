@@ -74,7 +74,6 @@ class Network {
         
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
-        request.addValue("token 0f65b3276bc987728b8be4ed4f45a22127194551", forHTTPHeaderField: "Authorization")
         
         URLSession.shared.dataTask(with: request) { (data, response, error) in
             
