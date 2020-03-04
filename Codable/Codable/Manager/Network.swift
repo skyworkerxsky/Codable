@@ -10,6 +10,29 @@ import Foundation
 
 class Network {
     
+    static func getComputerDatabase(url: String, completion: @escaping(_ computer: ComputerModel) -> ()){
+        
+        guard let url = URL(string: url) else { return }
+        URLSession.shared.dataTask(with: url) { (data, response, error) in
+            
+            if error != nil {
+                print(error!)
+                return
+            }
+            
+            if let data = data {
+                do {
+                    let computer = try JSONDecoder().decode(ComputerModel.self, from: data) // раскладываем в нашу модель
+                    print("computer success", computer)
+                    completion(computer)
+                } catch {
+                    print(error)
+                }
+            }
+            
+        }.resume()
+    }
+    
     static func getData(url: String, completion: @escaping (_ data: [CommentModel]) -> ()){
         
         guard let url = URL(string: url) else { return }

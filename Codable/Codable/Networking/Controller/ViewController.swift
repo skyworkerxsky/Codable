@@ -20,6 +20,7 @@ class ViewController: UIViewController  {
     let jsonURL = "https://jsonplaceholder.typicode.com/users"
     let githubURL = "https://api.github.com/repositories"
     let githubSearchURL = "https://api.github.com/search/repositories?q=page&s=updated"
+    let computerDatabaseURL = "http://testwork.nsd.naumen.ru/rest/computers"
     
     private var data = [GithubModel]()
     private var nextLink: String?
@@ -50,7 +51,12 @@ class ViewController: UIViewController  {
         }) { (dictionary) in
             
         }
-        */
+       
+        
+        Network.getComputerDatabase(url: computerDatabaseURL) { (computer) in
+            
+        }
+         */
         
         // get search repository
         Network.getSearchRepos(url: githubSearchURL, completion: { (data) in
